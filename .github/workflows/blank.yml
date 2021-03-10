@@ -34,5 +34,12 @@ jobs:
       
       - uses: actions/upload-artifact@v2
         with:
+          name: pdf_cv
+          path: Twenty-Seconds_cv.pdf
+      
+      
+      
+      
+        with:
           name: my-artifact
           path: Twenty-Seconds_cv.pdf
