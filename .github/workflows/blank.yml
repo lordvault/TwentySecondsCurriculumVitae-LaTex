@@ -39,7 +39,4 @@ jobs:
       
       
       
-      
-        with:
-          name: my-artifact
-          path: Twenty-Seconds_cv.pdf
+    
