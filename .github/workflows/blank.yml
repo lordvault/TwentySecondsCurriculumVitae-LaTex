@@ -30,10 +30,12 @@ jobs:
         with:
           root_file: Twenty-Seconds_cv.tex
       
-      - uses: actions/upload-artifact@v2
+      - name: Release
+        uses: softprops/action-gh-release@v1
         with:
-          name: pdf_cv
-          path: Twenty-Seconds_cv.pdf
+          files: Twenty-Seconds_cv.pdf
+          env:
+            GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
       
       
       
