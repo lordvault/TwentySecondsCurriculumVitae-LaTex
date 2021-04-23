@@ -35,7 +35,7 @@ jobs:
         with:
           files: Twenty-Seconds_cv.pdf
         env:
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          GITHUB_TOKEN: ${{secrets.TWENTY_GITHUB_TOKEN}}
       
       
       
