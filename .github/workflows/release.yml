@@ -33,6 +33,9 @@ jobs:
         with:
           url: "https://www.gravatar.com/avatar/ ${{ secrets.GRAVATAR_HASH }}.jpeg"
           filename: 'jorgemontes.jpeg'
+          
+      - name: Display structure of downloaded files
+        run: ls -R
       
       - name: Compile LaTeX document
         uses: xu-cheng/latex-action@v2
