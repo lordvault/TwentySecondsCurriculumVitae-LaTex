@@ -28,7 +28,7 @@ jobs:
       - uses: actions/checkout@v2
       
       - name: Download pic from gravatar 
-        run: wget https://www.gravatar.com/avatar/${{ secrets.GRAVATAR_HASH }}.jpeg -O jorgemontes.jpeg
+        run: wget https://www.gravatar.com/avatar/${{ secrets.GRAVATAR_HASH }}.jpeg?s=400 -O jorgemontes.jpeg
           
       - name: Display structure of downloaded files
         run: ls -R
