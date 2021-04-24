@@ -27,6 +27,13 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
       
+      - name: Download pic from gravatar 
+        uses: suisei-cn/actions-download-file@v1
+        id: jorgemontes.jpeg
+        with:
+          url: "https://www.gravatar.com/avatar/ ${{ secrets.GRAVATAR_HASH }}"
+          target: .
+      
       - name: Compile LaTeX document
         uses: xu-cheng/latex-action@v2
         with:
@@ -38,6 +45,7 @@ jobs:
           files: Twenty-Seconds_cv.pdf
         env:
           GITHUB_TOKEN: ${{ secrets.TWENTY_GITHUB_TOKEN }}
+          
       
       
       
