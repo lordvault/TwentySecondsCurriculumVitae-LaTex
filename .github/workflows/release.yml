@@ -31,7 +31,7 @@ jobs:
         uses: suisei-cn/actions-download-file@v1
         id: jorgemontes
         with:
-          url: "https://www.gravatar.com/avatar/ ${{ secrets.GRAVATAR_HASH }}"
+          url: "https://www.gravatar.com/avatar/ ${{ secrets.GRAVATAR_HASH }}.jpeg"
           target: .
       
       - name: Compile LaTeX document
