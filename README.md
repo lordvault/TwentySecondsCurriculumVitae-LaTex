@@ -1,6 +1,13 @@
 Twenty Seconds Curriculum Vitae in LaTex
 ========================================
 
+
+========================================
+
+This version just includes the Github Actions to make the CV as a release and it uses current image from Gravatar as the main image in the CV
+
+========================================
+
 [![Donate](https://img.shields.io/badge/PayPal-Donate%20to%20Author-blue.svg)](https://www.paypal.me/CarmineSpagnuolo)
 
 # Curricula Vitae - Résumés
