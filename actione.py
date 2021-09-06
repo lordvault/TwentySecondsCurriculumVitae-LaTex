@@ -40,7 +40,8 @@ def login(driver, email=None, password=None, cookie=None, timeout=10):
     password_elem.submit()
 
     try:
-        if driver.url == 'https://www.linkedin.com/checkpoint/lg/login-submit':
+        print(driver.current_url)
+        if driver.current_url == 'https://www.linkedin.com/checkpoint/lg/login-submit':
             remember = driver.find_element_by_id(c.REMEMBER_PROMPT)
             if remember:
                 remember.submit()
