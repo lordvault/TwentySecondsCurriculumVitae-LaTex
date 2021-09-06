@@ -24,15 +24,19 @@ def login(driver, email=None, password=None, cookie=None, timeout=10):
     if not email or not password:
         email, password = __prompt_email_password()
 
+    print("1L")
     driver.get("https://www.linkedin.com/login")
     time.sleep(2)
+    print("2L")
     element = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "username")))
     email_elem = driver.find_element_by_id("username")
     email_elem.send_keys(email)
-    time.sleep(2)
+    time.sleep(3)
+    print("3L")
     password_elem = driver.find_element_by_id("password")
     password_elem.send_keys(password)
-    time.sleep(2)
+    time.sleep(5)
+    print("4L")
     password_elem.submit()
 
     try:
@@ -43,7 +47,8 @@ def login(driver, email=None, password=None, cookie=None, timeout=10):
 
         element = WebDriverWait(driver, timeout).until(EC.presence_of_element_located((By.ID, c.VERIFY_LOGIN_ID)))
         print('pass')
-    except:
+    except Exception as ex:
+        print(f"Por el error {str(ex)}")
         pass
 
 
