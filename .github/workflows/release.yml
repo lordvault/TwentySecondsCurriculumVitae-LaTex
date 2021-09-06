@@ -30,7 +30,7 @@ jobs:
       - uses: actions/checkout@v2
         name: Install Google Chrome 
         run: |
-        chmod +x ./scripts/InstallChrome.sh
+          chmod +x ./scripts/InstallChrome.sh
           ./scripts/InstallChrome.sh
 
       - uses: nanasess/setup-chromedriver@master
