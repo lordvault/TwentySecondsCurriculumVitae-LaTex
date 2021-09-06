@@ -32,16 +32,19 @@ jobs:
         run: |
         chmod +x ./scripts/InstallChrome.sh
           ./scripts/InstallChrome.sh
+
       - uses: nanasess/setup-chromedriver@master
         run: |
           export DISPLAY=:99
           chromedriver --url-base=/wd/hub &
           sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 & # optional
+
       - name: Setup python
         uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
           architecture: x64
+          
       - name: Install Python dependencies
         uses: py-actions/py-dependency-install@v2
         with:
