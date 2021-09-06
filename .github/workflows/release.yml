@@ -8,6 +8,7 @@ on:
   push:
     tags:
       - 'v*.*.*'
+    branches: [ branch/* ]
   pull_request:
     branches: [ master ]
 
@@ -22,7 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [ '2.x', '3.x', 'pypy-2.7', 'pypy-3.6', 'pypy-3.7' ]
+        python-version: [ 'pypy-3.7' ]
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -31,7 +32,7 @@ jobs:
       - name: Install Google Chrome 
         run: |
           chmod +x ./scripts/InstallChrome.sh
-          ./scripts/InstallChrome.sh
+          ./InstallChrome.sh
 
       - uses: nanasess/setup-chromedriver@master
       - name: Install Google Driver
