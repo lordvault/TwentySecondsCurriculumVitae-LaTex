@@ -28,13 +28,13 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-      - name: Install Google Chrome 
+        name: Install Google Chrome 
         run: |
         chmod +x ./scripts/InstallChrome.sh
           ./scripts/InstallChrome.sh
 
-      - uses: actions/checkout@v2
       - uses: nanasess/setup-chromedriver@master
+        name: Install Google Driver
         run: |
           export DISPLAY=:99
           chromedriver --url-base=/wd/hub &
@@ -50,7 +50,7 @@ jobs:
         uses: py-actions/py-dependency-install@v2
         with:
           path: "requirements.txt"
-      - run: python scrypt.py
+        run: python scrypt.py
       
       - name: Download pic from gravatar 
         run: wget https://www.gravatar.com/avatar/${{ secrets.GRAVATAR_HASH }}.jpeg?s=400 -O jorgemontes.jpeg
