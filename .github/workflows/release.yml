@@ -61,7 +61,7 @@ jobs:
           sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 & # optional
 
       - name: Run Py-Script
-        run: python scrypt.py ${{ secrets.SECRET_LINKED_IN_MAIL }} ${{ secrets.SECRET_LINKED_IN_PASS }}
+        run: python vitae.py ${{ secrets.SECRET_LINKED_IN_MAIL }} ${{ secrets.SECRET_LINKED_IN_PASS }}
       
       - name: Download pic from gravatar 
         run: wget https://www.gravatar.com/avatar/${{ secrets.GRAVATAR_HASH }}.jpeg?s=400 -O jorgemontes.jpeg
