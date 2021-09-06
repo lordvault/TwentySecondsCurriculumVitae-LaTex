@@ -4,7 +4,7 @@ from selenium import webdriver
 
 from Persone import Persone
 
-driver = webdriver.Chrome('./chromedriver')
+driver = webdriver.Chrome('/usr/local/bin/chromedriver')
 
 email = sys.argv[1]
 password = sys.argv[2]
