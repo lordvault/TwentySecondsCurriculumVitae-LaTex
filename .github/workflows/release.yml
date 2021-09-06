@@ -40,12 +40,6 @@ jobs:
         run: |
           sudo apt-get install libxml2-dev libxslt-dev python-dev
 
-      - name: Test secret
-        run: |
-          echo ${{ secrets.SECRET_KEY }}
-          export SECRET_KEY=${{ secrets.SECRET_KEY }}
-          echo $SECRET_KEY
-
       - name: Setup python
         uses: actions/setup-python@v2
         with:
@@ -67,7 +61,7 @@ jobs:
           sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 & # optional
 
       - name: Run Py-Script
-        run: python scrypt.py
+        run: python scrypt.py ${{ secrets.SECRET_KEY }}
       
       - name: Download pic from gravatar 
         run: wget https://www.gravatar.com/avatar/${{ secrets.GRAVATAR_HASH }}.jpeg?s=400 -O jorgemontes.jpeg
