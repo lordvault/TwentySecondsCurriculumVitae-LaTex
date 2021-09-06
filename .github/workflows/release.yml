@@ -34,12 +34,9 @@ jobs:
           chmod +x ./InstallChrome.sh
           ./InstallChrome.sh
 
-      - uses: nanasess/setup-chromedriver@master
-      - name: Install Google Driver
+      - name: Install packages
         run: |
-          export DISPLAY=:99
-          chromedriver --url-base=/wd/hub &
-          sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 & # optional
+          sudo apt-get install libxml2-dev libxslt-dev python-dev
 
       - name: Setup python
         uses: actions/setup-python@v2
@@ -51,6 +48,16 @@ jobs:
         uses: py-actions/py-dependency-install@v2
         with:
           path: "requirements.txt"
+
+      - name: Download chrome driver
+        uses: nanasess/setup-chromedriver@master
+      - name: Install Google Driver
+        run: |
+          export DISPLAY=:99
+          chromedriver --url-base=/wd/hub &
+          sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 & # optional
+
+      
 
       - name: Run Py-Script
         run: python scrypt.py
