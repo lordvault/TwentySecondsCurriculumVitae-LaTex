@@ -72,7 +72,3 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.TWENTY_GITHUB_TOKEN }}
           
-      
-      
-      
-    
