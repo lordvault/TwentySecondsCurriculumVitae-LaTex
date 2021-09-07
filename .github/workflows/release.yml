@@ -60,9 +60,29 @@ jobs:
           chromedriver --url-base=/wd/hub &
           sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 & # optional
 
+      - name: Install Open VPN
+        run: sudo apt-get install openvpn
+      - name: Connect VPN
+        uses: golfzaptw/action-connect-ovpn@master
+        id: connect_vpn
+        with:
+          PING_URL: '127.0.0.1'
+          FILE_OVPN: 'OpenVPN.ovpn'
+        env:
+          CA_CRT: ${{ secrets.CA_CRT}}
+          USER_CRT: ${{ secrets.USER_CRT }}
+          USER_KEY: ${{ secrets.USER_KEY }}
+      - name: Check Connect VPN
+        run: echo ${{ steps.connect_vpn.outputs.STATUS }}
+      - name: kill vpn
+        if: always()
+        run: sudo killall openvpn
+
       - name: Run Py-Script
         run: |
           export DISPLAY=:99
+          chromedriver --url-base=/wd/hub &
+          sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 & # optional
           python vitae.py ${{ secrets.SECRET_LINKED_IN_MAIL }} ${{ secrets.SECRET_LINKED_IN_PASS }}
       
       - name: Download pic from gravatar 
