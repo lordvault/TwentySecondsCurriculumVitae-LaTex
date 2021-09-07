@@ -22,4 +22,17 @@ person = Persone("https://www.linkedin.com/in/jorge-montes/en", driver=driver)
 print(person.name)
 print(person.about)
 print(person.experiences)
+
+
+fin = open("Twenty-Seconds_cv.tex", "rt")
+#output file to write the result to
+fout = open("Twenty-Seconds_cv_re.tex", "wt")
+#for each line in the input file
+for line in fin:
+	#read replace the string and write to output file
+	fout.write(line.replace('pyton', 'python'))
+#close input and output files
+fin.close()
+fout.close()
+
 exit()
