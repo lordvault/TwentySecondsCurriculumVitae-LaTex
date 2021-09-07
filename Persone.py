@@ -1,3 +1,4 @@
+from posixpath import abspath
 from linkedin_scraper.objects import Interest, Accomplishment, Contact
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -64,17 +65,24 @@ class Persone(Person):
                 EC.presence_of_element_located(
                     (
                         By.XPATH,
-                        "/html/body/div[6]/div[3]/div/div/div/div/div[3]/div/div/main/div/div/div[3]/section/div/text()"
-                        ,
+                        "//*[@class='pv-profile-section pv-about-section artdeco-card p5 mt4 ember-view']"
                     )
                 )
             )
+            about.click()
+
+            child = about.find_element_by_xpath('./div')
+            aboutText = child.text.strip()
+            if "…" in aboutText:
+                aboutText = aboutText.split("…")[0]
+            print(aboutText)
+            about = aboutText
             print(4)
         except Exception as ex:
             print(f"Por el error {str(ex)}")
             about = None
         if about:
-            self.add_about(about.text.strip())
+            self.add_about(about)
 
         driver.execute_script(
             "window.scrollTo(0, Math.ceil(document.body.scrollHeight/2));"
