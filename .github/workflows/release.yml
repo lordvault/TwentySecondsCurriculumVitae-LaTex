@@ -85,18 +85,16 @@ jobs:
       - name: Compile LaTeX document
         uses: xu-cheng/latex-action@v2
         with:
-          root_file: Twenty-Seconds_cv.tex
+          root_file: Twenty-Seconds_cv_re.tex
 
       - name: Release
         uses: softprops/action-gh-release@v1
-        # if: startsWith(github.ref, 'refs/tags/')
-        with:
-          files: Twenty-Seconds_cv.pdf
-        env:
-          token: ${{ secrets.CUSTOM_GITHUB_TOKEN }}
+        if: startsWith(github.ref, 'refs/tags/')
+          with:
+            files: Twenty-Seconds_cv_re.pdf
+          env:
+            token: ${{ secrets.CUSTOM_GITHUB_TOKEN }}
 
       - name: Run latest-tag
         uses: EndBug/latest-tag@latest
       
-      
-          
