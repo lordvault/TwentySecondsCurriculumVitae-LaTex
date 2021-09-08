@@ -89,6 +89,12 @@ jobs:
       - name: Display structure of files
         run: ls -R
 
+      - name: Update release
+        uses: johnwbyrd/update-release@v1
+        with:
+          token: ${{ secrets.YOUR_PRIVATE_SECRET_TOKEN }}
+          files: Twenty-Seconds_cv_re.pdf
+      
       - name: Release
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
