@@ -33,7 +33,7 @@ jobs:
 
       - name: Install Google Chrome 
         run: |
-          chmod +x ./InstallChrome.sh
+          chmod +x ./utils/InstallChrome.sh
           ./InstallChrome.sh
 
       - name: Install packages
@@ -49,28 +49,30 @@ jobs:
       - name: Install Python dependencies
         uses: py-actions/py-dependency-install@v2
         with:
-          path: "requirements.txt"
+          path: "python/requirements.txt"
 
       - name: Download chrome driver
         uses: nanasess/setup-chromedriver@master
 
       - name: Install Open VPN
         run: sudo apt-get install openvpn
+
       - name: Connect VPN
         uses: golfzaptw/action-connect-ovpn@master
         id: connect_vpn
         with:
           PING_URL: '127.0.0.1'
-          FILE_OVPN: 'OpenVPN.ovpn'
+          FILE_OVPN: 'utils/OpenVPN.ovpn'
         env:
           CA_CRT: ${{ secrets.CA_CRT}}
           USER_CRT: ${{ secrets.USER_CRT }}
           USER_KEY: ${{ secrets.USER_KEY }}
+
       - name: Check Connect VPN
         run: echo ${{ steps.connect_vpn.outputs.STATUS }}
       
       - name: Run Py-Script
-        run: python vitae.py ${{ secrets.SECRET_LINKED_IN_MAIL }} ${{ secrets.SECRET_LINKED_IN_PASS }} /usr/local/bin/chromedriver
+        run: python python/vitae.py ${{ secrets.SECRET_LINKED_IN_MAIL }} ${{ secrets.SECRET_LINKED_IN_PASS }} /usr/local/bin/chromedriver
 
       - name: kill vpn
         if: always()
@@ -79,21 +81,21 @@ jobs:
       - name: Download pic from gravatar 
         run: wget https://www.gravatar.com/avatar/${{ secrets.GRAVATAR_HASH }}.jpeg?s=400 -O jorgemontes.jpeg
           
-      - name: Display structure of downloaded files
-        run: ls -R
-      
       - name: Compile LaTeX document
         uses: xu-cheng/latex-action@v2
         with:
           root_file: Twenty-Seconds_cv_re.tex
+      
+      - name: Display structure of files
+        run: ls -R
 
       - name: Release
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
-          with:
-            files: Twenty-Seconds_cv_re.pdf
-          env:
-            token: ${{ secrets.CUSTOM_GITHUB_TOKEN }}
+        with:
+          files: Twenty-Seconds_cv_re.pdf
+        env:
+          token: ${{ secrets.CUSTOM_GITHUB_TOKEN }}
 
       - name: Run latest-tag
         uses: EndBug/latest-tag@latest

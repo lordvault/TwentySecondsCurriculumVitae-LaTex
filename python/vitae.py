@@ -32,8 +32,8 @@ def scrape_linked_in_info():
     
 
 def replace_text_on_latex(scrape_info):
-    fin = open("Twenty-Seconds_cv.tex", "rt", encoding="utf-8")
-    fout = open("Twenty-Seconds_cv_re.tex", "wt", encoding="utf-8")
+    fin = open("../Twenty-Seconds_cv.tex", "rt", encoding="utf-8")
+    fout = open("../Twenty-Seconds_cv_re.tex", "wt", encoding="utf-8")
     for line in fin:
         fout.write(line.replace('==NAME==', scrape_info["name"]))
         fout.write(line.replace('==ABOUT_ME==', scrape_info["about"]))
