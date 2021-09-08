@@ -72,7 +72,7 @@ jobs:
         run: echo ${{ steps.connect_vpn.outputs.STATUS }}
       
       - name: Run Py-Script
-        run: python python/vitae.py ${{ secrets.SECRET_LINKED_IN_MAIL }} ${{ secrets.SECRET_LINKED_IN_PASS }} /usr/local/bin/chromedriver
+        run: python vitae.py ${{ secrets.SECRET_LINKED_IN_MAIL }} ${{ secrets.SECRET_LINKED_IN_PASS }} /usr/local/bin/chromedriver
 
       - name: kill vpn
         if: always()
