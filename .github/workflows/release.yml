@@ -90,10 +90,11 @@ jobs:
         run: ls -R
 
       - name: Update release
-        uses: johnwbyrd/update-release@v1
+        uses: ncipollo/release-action@v1
         with:
-          token: ${{ secrets.YOUR_PRIVATE_SECRET_TOKEN }}
-          files: Twenty-Seconds_cv_re.pdf
+          artifacts: "Twenty-Seconds_cv_re.pdf"
+          tag: "latest"
+          token: ${{ secrets.GITHUB_TOKEN }}
       
       - name: Release
         uses: softprops/action-gh-release@v1
