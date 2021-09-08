@@ -1,9 +1,10 @@
 import sys
+import os
 from linkedin_scraper import actions
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
-from Persone import Persone
+from python.Persone import Persone
 
 def scrape_linked_in_info():
     chrome_options = Options()
@@ -32,11 +33,14 @@ def scrape_linked_in_info():
     
 
 def replace_text_on_latex(scrape_info):
-    fin = open("../Twenty-Seconds_cv.tex", "rt", encoding="utf-8")
-    fout = open("../Twenty-Seconds_cv_re.tex", "wt", encoding="utf-8")
+    if os.path.exists("Twenty-Seconds_cv_re.tex"):
+        print("Deleting file Twenty-Seconds_cv_re.tex")
+        os.remove("Twenty-Seconds_cv_re.tex")
+    fin = open("Twenty-Seconds_cv.tex", "rt", encoding="utf-8")
+    fout = open("Twenty-Seconds_cv_re.tex", "wt", encoding="utf-8")
     for line in fin:
         fout.write(line.replace('==NAME==', scrape_info["name"]))
-        fout.write(line.replace('==ABOUT_ME==', scrape_info["about"]))
+        fout.write(line.replace('==ABOUT_ME==', scrape_info["about"][0]))
     fin.close()
     fout.close()
 

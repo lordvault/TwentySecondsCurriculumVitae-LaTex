@@ -34,7 +34,7 @@ jobs:
       - name: Install Google Chrome 
         run: |
           chmod +x ./utils/InstallChrome.sh
-          ./InstallChrome.sh
+          ./utils/InstallChrome.sh
 
       - name: Install packages
         run: |
