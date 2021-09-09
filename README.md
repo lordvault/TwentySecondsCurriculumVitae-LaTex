@@ -4,8 +4,33 @@ Twenty Seconds Curriculum Vitae in LaTex
 
 ========================================
 
+# Github Actions
+
+## Gravatar image
 This version just includes the Github Actions to make the CV as a release and it uses current image from Gravatar as the main image in the CV
 
+## Linkedin scrapper
+Added linkedin scrapper information, to achieve this, was required add some extra github-actions repos.
+
+Linked In has different ways to expose the information, one is via api, this require an Oauth approach wich requires have a microservice runing, to approve the authentication, retrieve the token and access to the info. That is hard to add on a github-action, so i decided to use a library for python named linkedin_scraper, this library have a big base to achieve the goal of retrieve all the information of linked-in using my existing account, but linkedin have his own validations, first, linked-in validates the location where you connect to your account, second, your account must have disabled the 2-factor autentication cuz is impossible to pass the generated code to the runing instance of github-action.
+
+1. Use selenium as base to scrapp the information from linked in.
+	- Added install google chrome 
+	- Added repo-action to download chrome driver
+2. Selenium is used as a reference library in different languages, in this case i decided to use python to achieve this task.
+	- Added step to install python and required libraries
+	- Added step to execute the python script
+3. To avoid de geolocation validation
+	- Download OpenVPN
+	- Added repo-action to connect to the vpn validate and disconect
+
+Functionality: Python using selenium autenticates on linked-in, extract the information, and replaces some tags on the Twenty-Seconds_cv.tex generating a output file with the replaced information Twenty-Seconds_cv_re.tex 
+
+## To-do: 
+- [ ] Split the logic on jobs, (You dont change the linked-in information all the time, so is not required to extract all the information always)
+- [ ] Persist the latest Twenty-Seconds_cv_re.tex on the repo, if you required to generate again on the fly, change styles, or something like that, avoids go again to linkedin.
+- [ ] Fix the manual execution for actions. At this moment doesn't work, idk why. 
+ 
 ========================================
 
 [![Donate](https://img.shields.io/badge/PayPal-Donate%20to%20Author-blue.svg)](https://www.paypal.me/CarmineSpagnuolo)

@@ -4,69 +4,139 @@ name: CI
 
 # Controls when the action will run. 
 on:
-  # Triggers the workflow on push or pull request events but only for the master branch
-  push:
-    tags:
-      - 'v*.*.*'
-  pull_request:
-    branches: [ master ]
-
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
+    inputs:
+      tags:
+        description: 'Scenario tags (scrapp)'
+        default: ''
+ 
+  # Allows you to run this workflow manually from the Actions tab
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
-  build:
+  scrapp:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [ '2.x', '3.x', 'pypy-2.7', 'pypy-3.6', 'pypy-3.7' ]
-
+        python-version: [ 'pypy-3.7' ]
+  
+    
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
-      - name: Install Google Chrome 
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Print variables 
         run: |
-        chmod +x ./scripts/InstallChrome.sh
-          ./scripts/InstallChrome.sh
-      - uses: nanasess/setup-chromedriver@master
+          echo ${{ github.event.ref }}
+          echo ${{ github.event_name }}
+        if: contains(github.event.inputs.tags, 'scrapp')
+
+      - name: Install Google Chrome
         run: |
-          export DISPLAY=:99
-          chromedriver --url-base=/wd/hub &
-          sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 & # optional
+          chmod +x ./utils/InstallChrome.sh
+          ./utils/InstallChrome.sh
+        if: contains(github.event.inputs.tags, 'scrapp')
+
+      - name: Install packages
+        run: |
+          sudo apt-get install libxml2-dev libxslt-dev python-dev
+        if: contains(github.event.inputs.tags, 'scrapp')
+
       - name: Setup python
         uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
           architecture: x64
+        if: contains(github.event.inputs.tags, 'scrapp')
+
       - name: Install Python dependencies
         uses: py-actions/py-dependency-install@v2
         with:
-          path: "requirements.txt"
-      - run: python scrypt.py
+          path: "python/requirements.txt"
+        if: contains(github.event.inputs.tags, 'scrapp')
+
+      - name: Download chrome driver
+        uses: nanasess/setup-chromedriver@master
+        if: contains(github.event.inputs.tags, 'scrapp')
+
+      - name: Install Open VPN
+        run: sudo apt-get install openvpn
+        if: contains(github.event.inputs.tags, 'scrapp')
+
+      - name: Connect VPN
+        uses: golfzaptw/action-connect-ovpn@master
+        id: connect_vpn
+        with:
+          PING_URL: '127.0.0.1'
+          FILE_OVPN: 'utils/OpenVPN.ovpn'
+        env:
+          CA_CRT: ${{ secrets.CA_CRT}}
+          USER_CRT: ${{ secrets.USER_CRT }}
+          USER_KEY: ${{ secrets.USER_KEY }}
+        if: contains(github.event.inputs.tags, 'scrapp')
+
+      - name: Check Connect VPN
+        run: echo ${{ steps.connect_vpn.outputs.STATUS }}
+        if: contains(github.event.inputs.tags, 'scrapp')
       
+      - name: Run Py-Script
+        run: python vitae.py ${{ secrets.SECRET_LINKED_IN_MAIL }} ${{ secrets.SECRET_LINKED_IN_PASS }} /usr/local/bin/chromedriver
+        if: contains(github.event.inputs.tags, 'scrapp')
+
+      - name: kill vpn
+        if: always()
+        run: sudo killall openvpn
+        if: contains(github.event.inputs.tags, 'scrapp')
+
+      - name: Commit changes
+        uses: EndBug/add-and-commit@v7
+        with:
+          author_name: Luis Medina
+          author_email: medinaluisgerardo@gmail.com
+          message: 'Updated vitae format from linkedIn'
+          add: 'Twenty-Seconds_cv_re.tex'
+        if: contains(github.event.inputs.tags, 'scrapp')
+
+  build:
+    needs: [scrapp]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Display structure of files
+        run: ls -R
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+
       - name: Download pic from gravatar 
         run: wget https://www.gravatar.com/avatar/${{ secrets.GRAVATAR_HASH }}.jpeg?s=400 -O jorgemontes.jpeg
           
-      - name: Display structure of downloaded files
-        run: ls -R
-      
       - name: Compile LaTeX document
         uses: xu-cheng/latex-action@v2
         with:
-          root_file: Twenty-Seconds_cv.tex
+          root_file: Twenty-Seconds_cv_re.tex
       
-      - name: Release
-        uses: softprops/action-gh-release@v1
+      - name: Display structure of files
+        run: ls -R
+
+      - uses: "marvinpinto/action-automatic-releases@latest"
         with:
-          files: Twenty-Seconds_cv.pdf
-        env:
-          GITHUB_TOKEN: ${{ secrets.TWENTY_GITHUB_TOKEN }}
-          
+          repo_token: "${{ secrets.CUSTOM_GITHUB_TOKEN }}"
+          automatic_release_tag: "latest"
+          title: "Curriculum Vitae"
+          files: Twenty-Seconds_cv_re.pdf
       
+      #- name: Release
+      #  uses: softprops/action-gh-release@v1
+      #  if: startsWith(github.ref, 'refs/tags/')
+      #  with:
+      #    files: Twenty-Seconds_cv_re.pdf
+      #  env:
+      #    token: ${{ secrets.CUSTOM_GITHUB_TOKEN }}
+
+      # - name: Run latest-tag
+      #  uses: EndBug/latest-tag@latest
       
-      
-    
