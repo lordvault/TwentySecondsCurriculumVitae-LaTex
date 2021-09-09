@@ -22,7 +22,7 @@ jobs:
       matrix:
         python-version: [ 'pypy-3.7' ]
   
-    if: contains(github.event.inputs.logLevel, 'scrapp')
+    
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -33,32 +33,39 @@ jobs:
         run: |
           echo ${{ github.event.ref }}
           echo ${{ github.event_name }}
+        if: contains(github.event.inputs.tags, 'scrapp')
 
       - name: Install Google Chrome
         run: |
           chmod +x ./utils/InstallChrome.sh
           ./utils/InstallChrome.sh
+        if: contains(github.event.inputs.tags, 'scrapp')
 
       - name: Install packages
         run: |
           sudo apt-get install libxml2-dev libxslt-dev python-dev
+        if: contains(github.event.inputs.tags, 'scrapp')
 
       - name: Setup python
         uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
           architecture: x64
+        if: contains(github.event.inputs.tags, 'scrapp')
 
       - name: Install Python dependencies
         uses: py-actions/py-dependency-install@v2
         with:
           path: "python/requirements.txt"
+        if: contains(github.event.inputs.tags, 'scrapp')
 
       - name: Download chrome driver
         uses: nanasess/setup-chromedriver@master
+        if: contains(github.event.inputs.tags, 'scrapp')
 
       - name: Install Open VPN
         run: sudo apt-get install openvpn
+        if: contains(github.event.inputs.tags, 'scrapp')
 
       - name: Connect VPN
         uses: golfzaptw/action-connect-ovpn@master
@@ -70,16 +77,20 @@ jobs:
           CA_CRT: ${{ secrets.CA_CRT}}
           USER_CRT: ${{ secrets.USER_CRT }}
           USER_KEY: ${{ secrets.USER_KEY }}
+        if: contains(github.event.inputs.tags, 'scrapp')
 
       - name: Check Connect VPN
         run: echo ${{ steps.connect_vpn.outputs.STATUS }}
+        if: contains(github.event.inputs.tags, 'scrapp')
       
       - name: Run Py-Script
         run: python vitae.py ${{ secrets.SECRET_LINKED_IN_MAIL }} ${{ secrets.SECRET_LINKED_IN_PASS }} /usr/local/bin/chromedriver
+        if: contains(github.event.inputs.tags, 'scrapp')
 
       - name: kill vpn
         if: always()
         run: sudo killall openvpn
+        if: contains(github.event.inputs.tags, 'scrapp')
 
       - name: Commit changes
         uses: EndBug/add-and-commit@v7
@@ -88,6 +99,7 @@ jobs:
           author_email: medinaluisgerardo@gmail.com
           message: 'Updated vitae format from linkedIn'
           add: 'Twenty-Seconds_cv_re.tex'
+        if: contains(github.event.inputs.tags, 'scrapp')
 
   build:
     needs: [scrapp]
