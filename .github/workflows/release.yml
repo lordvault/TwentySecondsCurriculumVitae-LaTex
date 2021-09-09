@@ -5,6 +5,7 @@ name: CI
 # Controls when the action will run. 
 on:
   workflow_dispatch:
+    inputs:
       tags:
         description: 'Scenario tags (scrapp)'
         default: ''
