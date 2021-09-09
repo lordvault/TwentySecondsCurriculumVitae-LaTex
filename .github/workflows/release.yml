@@ -88,9 +88,8 @@ jobs:
         if: contains(github.event.inputs.tags, 'scrapp')
 
       - name: kill vpn
-        if: always()
-        run: sudo killall openvpn
         if: contains(github.event.inputs.tags, 'scrapp')
+        run: sudo killall openvpn
 
       - name: Commit changes
         uses: EndBug/add-and-commit@v7
