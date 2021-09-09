@@ -27,6 +27,7 @@ jobs:
   
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+      name: Scrapp Linked-In
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: Checkout code
         uses: actions/checkout@v2
@@ -36,7 +37,7 @@ jobs:
           echo ${{ github.event.ref }}
           echo ${{ github.event_name }}
 
-      - name: Install Google Chrome 
+      - name: Install Google Chrome
         run: |
           chmod +x ./utils/InstallChrome.sh
           ./utils/InstallChrome.sh
@@ -84,8 +85,12 @@ jobs:
         run: sudo killall openvpn
 
   build:
+    needs: [scrapp]
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        
       - name: Download pic from gravatar 
         run: wget https://www.gravatar.com/avatar/${{ secrets.GRAVATAR_HASH }}.jpeg?s=400 -O jorgemontes.jpeg
           
