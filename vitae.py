@@ -21,7 +21,7 @@ def scrape_linked_in_info():
     email = sys.argv[1]
     password = sys.argv[2]
     actions.login(driver, email, password) # if email and password isnt given, it'll prompt in terminal
-    person = Persone("https://www.linkedin.com/in/jorge-montes/en", driver=driver)
+    person = Persone(f"https://www.linkedin.com/in/{sys.argv[4]}/en", driver=driver)
     print(person.name)
     print(person.about)
     print(person.experiences)

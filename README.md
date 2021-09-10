@@ -30,6 +30,7 @@ Functionality: Python using selenium autenticates on linked-in, extract the info
 - [ ] Split the logic on jobs, (You dont change the linked-in information all the time, so is not required to extract all the information always)
 - [ ] Persist the latest Twenty-Seconds_cv_re.tex on the repo, if you required to generate again on the fly, change styles, or something like that, avoids go again to linkedin.
 - [ ] Fix the manual execution for actions. At this moment doesn't work, idk why. 
+- [ ] Add validation to sys parameters on python
  
 ========================================
 
